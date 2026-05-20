@@ -1,12 +1,18 @@
 # KyNet IAM Lab — Enterprise Identity & Access Management Home Lab
 
-**Built by Kyle Hughes | CompTIA Security+ | IAM Analyst**
+**Built by Kyle Hughes | CompTIA Security+ | AZ-900 |IAM Analyst**
+
+---
+
+# KyNet Wiki page
+
+*https://github.com/CyberGuyKy/KyNet-IAM-Lab/wiki*
 
 ---
 
 ## Overview
 
-KyNet is a fully functional enterprise Identity and Access Management lab built from scratch in VirtualBox, simulating a real-world hybrid identity environment. This project demonstrates hands-on proficiency with the tools, protocols, and workflows used by IAM professionals in production environments — from on-premises Active Directory administration to cloud identity federation with Microsoft Entra ID.
+KyNet is a fully functional enterprise Identity and Access Management lab built from scratch in VirtualBox, simulating a real-world hybrid identity environment. This project demonstrates hands-on proficiency with the tools, protocols, and workflows used by IAM professionals in production environments from on-premises Active Directory administration to cloud identity federation with Microsoft Entra ID.
 
 The lab simulates a fictional four-department organization called **KyNet Corporation**, with realistic user provisioning, role-based access control, group policy enforcement, federated identity, MFA, and security monitoring — all built and documented end to end.
 
@@ -77,9 +83,18 @@ The lab simulates a fictional four-department organization called **KyNet Corpor
 
 ---
 
-## Phase 1 — On-Premises IAM Environment
+## Phase 1 - Set Up Virtual Machines via VirtualBox
 
-### 1.1 Active Directory Foundation
+| Machine | IP Address | Role | OS |
+|---------|------------|------|----|
+| DC-01 | 192.168.56.10 | Domain Controller | Windows Server 2022 |
+| MS01 | 192.168.56.20 | File Server | Windows Server 2022 |
+| UB01 | 192.168.56.30 | Keycloak / Wazuh | Linux Ubuntu |
+| WS01 | 192.168.56.40 | Workstation | Windows 11 |
+
+## Phase 2 — On-Premises IAM Environment
+
+### 2.1 Active Directory Foundation
 
 Built a complete Active Directory domain (`KyNet.local`) on Windows Server 2022 with a structured Organizational Unit hierarchy mirroring a real enterprise:
 
@@ -95,7 +110,7 @@ KyNet.local
 └── KyNet_Admins
 ```
 
-### 1.2 User Provisioning via PowerShell Automation
+### 2.2 User Provisioning via PowerShell Automation
 
 Provisioned 12 users across 4 departments using PowerShell automation — demonstrating IAM lifecycle management at scale:
 
@@ -119,7 +134,7 @@ New-ADUser `
 
 All users also members of GRP_AllStaff.
 
-### 1.3 Role-Based Access Control (RBAC)
+### 2.3 Role-Based Access Control (RBAC)
 
 Configured department file shares on MS01 with NTFS permissions enforcing least privilege by security group membership:
 
@@ -133,7 +148,7 @@ Configured department file shares on MS01 with NTFS permissions enforcing least 
 
 **RBAC Verified:** Logged in as users from each department and confirmed access controls held — Finance users denied HR share, Engineering users denied Finance share, IT Admin accessed all shares.
 
-### 1.4 Group Policy Objects (GPO)
+### 2.4 Group Policy Objects (GPO)
 
 Created and applied department-specific Group Policy Objects:
 
@@ -147,7 +162,7 @@ Created and applied department-specific Group Policy Objects:
 
 GPOs verified with `gpresult /r` confirming correct policies following users across workstations.
 
-### 1.5 Help Desk Skills Demonstrated
+### 2.5 Help Desk Skills Demonstrated
 
 Demonstrated core AD help desk workflows via both GUI (ADUC/ADAC) and PowerShell:
 
@@ -161,9 +176,9 @@ Demonstrated core AD help desk workflows via both GUI (ADUC/ADAC) and PowerShell
 
 ---
 
-## Phase 2 — Federated Identity with Keycloak
+## Phase 3 — Federated Identity with Keycloak
 
-### 2.1 Keycloak Deployment
+### 3.1 Keycloak Deployment
 
 Deployed Keycloak 26.6.1 on Ubuntu Server 24.04 as a centralized Identity Provider:
 
@@ -171,7 +186,7 @@ Deployed Keycloak 26.6.1 on Ubuntu Server 24.04 as a centralized Identity Provid
 - Configured as a systemd service with dedicated service account
 - Configured for HTTP on port 8080 with `http-host=0.0.0.0`
 
-### 2.2 LDAP Federation
+### 3.2 LDAP Federation
 
 Connected Keycloak to Active Directory via LDAP federation:
 
@@ -180,7 +195,7 @@ Connected Keycloak to Active Directory via LDAP federation:
 - Configured attribute mappers for email, surname, and department
 - Synced all 12 KyNet AD users into the Keycloak KyNet realm
 
-### 2.3 MFA with Microsoft Authenticator
+### 3.3 MFA with Microsoft Authenticator
 
 Configured TOTP-based MFA enforced for all users:
 
@@ -191,13 +206,13 @@ Configured TOTP-based MFA enforced for all users:
 
 ---
 
-## Phase 3 — SIEM with Wazuh
+## Phase 4 — SIEM with Wazuh
 
-### 3.1 Wazuh Deployment
+### 4.1 Wazuh Deployment
 
 Deployed Wazuh 4.14.5 on UB01 using the automated quickstart installer. Troubleshot and resolved a locale initialization issue affecting OpenSearch/Java startup.
 
-### 3.2 Agent Deployment
+### 4.2 Agent Deployment
 
 Deployed Wazuh agents on all three Windows VMs:
 
@@ -207,7 +222,7 @@ Deployed Wazuh agents on all three Windows VMs:
 | MS01 | 192.168.56.20 | Windows Server 2022 | Active |
 | WS01 | 192.168.56.30 | Windows 11 | Active |
 
-### 3.3 Security Events Detected
+### 4.3 Security Events Detected
 
 Demonstrated real security event detection across the environment:
 
@@ -231,13 +246,13 @@ Demonstrated real security event detection across the environment:
 
 ---
 
-## Phase 4 — Hybrid Identity with Microsoft Entra ID
+## Phase 5 — Hybrid Identity with Microsoft Entra ID
 
-### 4.1 Entra ID Tenant
+### 5.1 Entra ID Tenant
 
 Created a Microsoft Entra ID tenant and configured a native Global Administrator account for hybrid identity management.
 
-### 4.2 Microsoft Entra Cloud Sync
+### 5.2 Microsoft Entra Cloud Sync
 
 Configured Microsoft Entra Cloud Sync to bridge on-premises KyNet.local with Entra ID:
 
@@ -319,8 +334,9 @@ A detailed log of issues encountered and resolved during the build is documented
 
 ## Certifications & Education
 
-- **CompTIA Security+** — Active
-- **Bachelor of Science, Cybersecurity** — Bellevue University (In Progress)
+- **CompTIA Security+** — 09/25
+-**AZ900**- 04/26
+- **Bachelor of Science, Cybersecurity** — Bellevue University 05/26
 - **Honor Society Member**
 - Pursuing: SC-300 (Microsoft Identity and Access Administrator)
 
